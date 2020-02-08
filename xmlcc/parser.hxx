@@ -18,19 +18,21 @@
 namespace xmlcc {
 
 #if XMLXX_CXX11
-  enum class content {
+  enum class content : unsigned char {
 #else
   enum content {
 #endif
     empty,
     simple,
     complex,
-    mixed,
+    mixed
   };
+
+  std::ostream& operator<<(std::ostream& os, content c);
 
   class XMLCC_EXPORT parser {
   public:
-    typedef unsigned feature_type;
+    typedef unsigned char feature_type;
     enum {
       receive_elements = 0x01,
       receive_attributes_map = 0x02,
@@ -38,7 +40,7 @@ namespace xmlcc {
       receive_characters = 0x08,
 
       default_feature =
-          receive_elements | receive_attributes_map | receive_characters,
+          receive_elements | receive_attributes_map | receive_characters
     };
 
     enum event_type {
@@ -47,7 +49,7 @@ namespace xmlcc {
       start_attribute,
       end_attribute,
       characters,
-      eof,
+      eof
     };
 
     typedef enum content content_type;
@@ -82,11 +84,9 @@ namespace xmlcc {
     enum {
       next_state,    // indicates that the event has been peeked
                      // e.g., peek() has just been called
-      current_state, // indicates that the event is handled
+      current_state  // indicates that the event is handled
                      // e.g., next() has just been called
     } state_;
-
-    bool suspended_;
 
     // when handling start element, indicates whether
     // the end element handler is already invoked
@@ -96,7 +96,7 @@ namespace xmlcc {
 
     XML_Parser p_;
 
-    std::vector<std::pair<qname_type, std::string>> typedef attributes;
+    std::vector<std::pair<qname_type, std::string> > typedef attributes;
 
     // attribute events of current element
     attributes attr_;
@@ -125,7 +125,7 @@ namespace xmlcc {
       attribute_map_type attr_map;
       mutable attribute_map_type::size_type attr_unhandled;
 
-      element_entry() XMLXX_NOEXCEPT : content(content_type::mixed),
+      element_entry() XMLXX_NOEXCEPT : content(content::mixed),
                                        attr_unhandled(false)
       {
       }
@@ -133,10 +133,6 @@ namespace xmlcc {
     std::vector<element_entry> typedef elements;
 
     elements elem_;
-
-    void suspend(event_type reason) XMLXX_NOEXCEPT;
-
-    void abort(const std::exception_ptr &reason) XMLXX_NOEXCEPT;
 
   public:
     event_type event() const { return event_; }
@@ -187,10 +183,17 @@ namespace xmlcc {
 
     // buffer size
     int bufsz_;
+    struct parsing_state {
+      XML_Status xml_status_;
+      short case_;
+      bool suspended_;
+    } parsing_state_;
 
-    XML_Status xml_status_;
-    int case_;
     void parse();
+
+    void suspend(event_type reason) XMLXX_NOEXCEPT;
+
+    void abort(const std::exception_ptr &reason) XMLXX_NOEXCEPT;
 
     static void XMLCALL start_element_(void *userdata, const XML_Char *name,
                                        const XML_Char **atts);

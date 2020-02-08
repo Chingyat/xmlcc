@@ -11,19 +11,15 @@ namespace xmlcc {
       switch (c) {
       case content::empty:
         return "empty";
-        break;
+
       case content::simple:
         return "simple";
-        break;
+
       case content::complex:
         return "complex";
-        break;
+
       case content::mixed:
         return "mixed";
-        break;
-      default:
-        std::terminate();
-        break;
       }
     }
     const char *to_string(parser::event_type e) XMLXX_NOEXCEPT
@@ -47,12 +43,10 @@ namespace xmlcc {
       case xmlcc::parser::eof:
         return "eof";
 
-      default:
-        std::terminate();
       }
     }
   } // namespace
-  
+
   std::ostream &operator<<(std::ostream &os, parser::event_type e)
   {
     return os << to_string(e);
@@ -65,10 +59,9 @@ namespace xmlcc {
 
   parser::parser(std::istream &is, const std::string &name,
                  feature_type feature)
-      : feature_(feature), event_(eof), state_(current_state),
-        suspended_(false), ended_(false), pis_(&is), is_attr_char_(false),
-        bufsz_(1024), xml_status_(), case_(0), pqname_(), pvalue_(),
-        input_name_(name)
+      : feature_(feature), event_(eof), state_(current_state), ended_(false),
+        pis_(&is), is_attr_char_(false), bufsz_(1024), parsing_state_(),
+        pqname_(), pvalue_(), input_name_(name)
   {
     p_ = XML_ParserCreateNS(0, ' ');
     // ensure the following code does not throw
@@ -89,7 +82,7 @@ namespace xmlcc {
   // called in handler when events are ready
   void parser::suspend(event_type reason) XMLXX_NOEXCEPT
   {
-    assert(suspended_ == false);
+    assert(!parsing_state_.suspended_);
     event_ = reason;
     XML_Status s = XML_StopParser(p_, true);
     if (s == XML_STATUS_ERROR) {
@@ -97,7 +90,7 @@ namespace xmlcc {
       std::cerr << "suspend: " << XML_ErrorString(err) << '\n';
       std::terminate();
     }
-    suspended_ = true;
+    parsing_state_.suspended_ = true;
   }
 
   // aborts the parser
@@ -183,9 +176,9 @@ namespace xmlcc {
   // parses the input, returns on events
   void parser::parse()
   {
-    suspended_ = false;
+    parsing_state_.suspended_ = false;
 
-    switch (case_) {
+    switch (parsing_state_.case_) {
     case 0:
       while (*pis_) {
         {
@@ -193,20 +186,20 @@ namespace xmlcc {
           int len = static_cast<int>(
               pis_->readsome(reinterpret_cast<char *>(b), bufsz_));
           if (len == 0) {
-            case_ = 2;
+            parsing_state_.case_ = 2;
             break;
           }
-          xml_status_ = XML_ParseBuffer(p_, len, pis_->eof());
+          parsing_state_.xml_status_ = XML_ParseBuffer(p_, len, pis_->eof());
         }
 
-        while (xml_status_ == XML_STATUS_SUSPENDED) {
-          case_ = 1;
+        while (parsing_state_.xml_status_ == XML_STATUS_SUSPENDED) {
+          parsing_state_.case_ = 1;
           return;
         case 1:
-          xml_status_ = XML_ResumeParser(p_);
+          parsing_state_.xml_status_ = XML_ResumeParser(p_);
         }
 
-        if (xml_status_ == XML_STATUS_ERROR) {
+        if (parsing_state_.xml_status_ == XML_STATUS_ERROR) {
           if (exc_)
             std::rethrow_exception(exc_);
           XMLXX_THROW(parsing(*this, XML_ErrorString(XML_GetErrorCode(p_))));
@@ -347,7 +340,7 @@ namespace xmlcc {
   {
     parser *const p = reinterpret_cast<parser *>(userdata);
 
-    if (p->suspended_) {
+    if (p->parsing_state_.suspended_) {
       assert(p->ended_ == false);
       p->ended_ = true;
     }
@@ -362,7 +355,7 @@ namespace xmlcc {
   void parser::characters_(void *userdata, const XML_Char *s, int len)
   {
     parser *const p = reinterpret_cast<parser *>(userdata);
-
+    assert(len >= 0);
     XMLXX_TRY
     {
       if (p->elem_.back().content == content::mixed) {
