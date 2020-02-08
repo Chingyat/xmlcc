@@ -50,6 +50,8 @@ namespace xmlcc {
 
   parser::~parser() { XML_ParserFree(p_); }
 
+  // suspends the parser
+  // called in handler when events are ready
   void parser::suspend(event_type reason) XMLXX_NOEXCEPT
   {
     assert(suspended_ == false);
@@ -63,6 +65,8 @@ namespace xmlcc {
     suspended_ = true;
   }
 
+  // aborts the parser
+  // called in handler on error
   void parser::abort(std::exception_ptr const &exc) XMLXX_NOEXCEPT
   {
     XML_Status s = XML_StopParser(p_, false);
@@ -141,6 +145,7 @@ namespace xmlcc {
     parse();
   }
 
+  // parses the input, returns on events
   void parser::parse()
   {
     suspended_ = false;
@@ -178,6 +183,7 @@ namespace xmlcc {
     }
   }
 
+  // prepares the data that can be observed using qname(), value() etc
   void parser::prepare_data()
   {
     if (event_ == eof) {

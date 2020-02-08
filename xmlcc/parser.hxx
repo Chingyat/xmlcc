@@ -52,35 +52,53 @@ namespace xmlcc {
 
     typedef enum content content_type;
 
+    // creates the parser 
     parser(std::istream &is, const std::string &name,
            feature_type feature = default_feature);
 
     ~parser();
 
+    // sets the content type of the current element
     void content(content_type c) { elem_.back().content = c; }
 
     typedef class qname qname_type;
 
   private:
+
     feature_type feature_;
 
+    // the event returned by the last next() or peek() called
     event_type event_;
 
     enum {
-      next_state,
-      current_state,
+      next_state,    // indicates that the event has been peeked
+                     // e.g., peek() has just been called
+      current_state, // indicates that the event is handled
+                     // e.g., next() has just been called
     } state_;
 
     bool suspended_;
+
+    // when handling start element, indicates whether
+    // the end element handler is already invoked
     bool ended_;
 
     std::istream *pis_;
+
     XML_Parser p_;
+
     std::vector<std::pair<qname_type, std::string>> typedef attributes;
+    
+    // attribute events of current element
     attributes attr_;
+
+    // index of the attribute event being handled
     attributes::size_type attr_i_;
+
+    // to indicate whether the characters are attribute value
     bool is_attr_char_;
 
+    // character data
     std::string char_;
 
     struct attribute_value {
@@ -89,8 +107,9 @@ namespace xmlcc {
     };
     typedef std::map<qname_type, attribute_value> attribute_map_type;
 
+    // empty attribute map to be returned when there are no element
+    // in the element vector
     const attribute_map_type empty_attr_map_;
-
     struct element_entry {
       qname_type name;
       content_type content;
@@ -151,11 +170,13 @@ namespace xmlcc {
       content(c);
     }
 
+    // peek the next event
     event_type peek();
 
   private:
     void next_();
 
+    // buffer size
     int bufsz_;
 
     XML_Status xml_status_;
@@ -363,7 +384,7 @@ namespace xmlcc {
     static std::string serialize(const T &v, Serializer const &)
     {
       std::ostringstream ss;
-      ss < v;
+      ss << v;
       return ss.str();
     }
   };
