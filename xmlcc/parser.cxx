@@ -5,9 +5,9 @@
 
 namespace xmlcc {
 
-  std::ostream &operator<<(std::ostream &os, content c)
-  {
-    return os << [](content c) {
+  namespace {
+    const char *to_string(content c) XMLXX_NOEXCEPT
+    {
       switch (c) {
       case content::empty:
         return "empty";
@@ -25,7 +25,42 @@ namespace xmlcc {
         std::terminate();
         break;
       }
-    }(c);
+    }
+    const char *to_string(parser::event_type e) XMLXX_NOEXCEPT
+    {
+      switch (e) {
+      case xmlcc::parser::start_element:
+        return "start element";
+
+      case xmlcc::parser::end_element:
+        return "end element";
+
+      case xmlcc::parser::start_attribute:
+        return "start attribute";
+
+      case xmlcc::parser::end_attribute:
+        return "end attribute";
+
+      case xmlcc::parser::characters:
+        return "characters";
+
+      case xmlcc::parser::eof:
+        return "eof";
+
+      default:
+        std::terminate();
+      }
+    }
+  } // namespace
+  
+  std::ostream &operator<<(std::ostream &os, parser::event_type e)
+  {
+    return os << to_string(e);
+  }
+
+  std::ostream &operator<<(std::ostream &os, content c)
+  {
+    return os << to_string(c);
   }
 
   parser::parser(std::istream &is, const std::string &name,
@@ -361,34 +396,6 @@ namespace xmlcc {
   unsigned long parser::column() const XMLXX_NOEXCEPT
   {
     return XML_GetCurrentColumnNumber(p_);
-  }
-
-  std::ostream &operator<<(std::ostream &os, parser::event_type e)
-  {
-    return os << [](parser::event_type e) -> const char * {
-      switch (e) {
-      case xmlcc::parser::start_element:
-        return "start element";
-
-      case xmlcc::parser::end_element:
-        return "end element";
-
-      case xmlcc::parser::start_attribute:
-        return "start attribute";
-
-      case xmlcc::parser::end_attribute:
-        return "end attribute";
-
-      case xmlcc::parser::characters:
-        return "characters";
-
-      case xmlcc::parser::eof:
-        return "eof";
-
-      default:
-        std::terminate();
-      }
-    }(e);
   }
 
 } // namespace xmlcc
