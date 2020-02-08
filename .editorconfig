@@ -1,0 +1,2 @@
+[*.{cxx}]
+indent_size = 2
