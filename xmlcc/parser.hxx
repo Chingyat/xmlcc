@@ -52,19 +52,28 @@ namespace xmlcc {
 
     typedef enum content content_type;
 
-    // creates the parser 
+    // creates the parser
     parser(std::istream &is, const std::string &name,
            feature_type feature = default_feature);
 
     ~parser();
 
+#if XMLXX_CXX11
+    parser(const parser &) = delete;
+    parser &operator=(const parser &) = delete;
+#else
+  private:
+    parser(const parser &);
+    parser &operator=(const parser &);
+#endif
+
+  public:
     // sets the content type of the current element
     void content(content_type c) { elem_.back().content = c; }
 
     typedef class qname qname_type;
 
   private:
-
     feature_type feature_;
 
     // the event returned by the last next() or peek() called
@@ -88,7 +97,7 @@ namespace xmlcc {
     XML_Parser p_;
 
     std::vector<std::pair<qname_type, std::string>> typedef attributes;
-    
+
     // attribute events of current element
     attributes attr_;
 
