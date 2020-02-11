@@ -1,0 +1,12 @@
+#ifndef XMLCC_DETAIL_CONFIG_HXX
+#define XMLCC_DETAIL_CONFIG_HXX
+
+#cmakedefine XMLXX_CXX11
+
+#cmakedefine XMLXX_CXX14
+
+#cmakedefine XMLXX_CXX17
+
+#cmakedefine XMLXX_NO_EXCEPTIONS
+
+#endif // !XMLCC_DETAIL_CONFIG_HXX

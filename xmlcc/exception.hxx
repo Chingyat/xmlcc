@@ -1,14 +1,13 @@
 #ifndef XMLCC_EXCEPTION_HXX
 #define XMLCC_EXCEPTION_HXX
 
-#include <xmlcc/detail/config.hxx>
-#include <xmlcc/detail/export.hxx>
+#include <xmlcc/detail/macros.hxx>
+#include <xmlcc/detail/export.h>
+#include <xmlcc/detail/fwd.hxx>
 
 #include <system_error>
 
 namespace xmlcc {
-  class parser;
-
   class XMLCC_EXPORT parsing : public std::exception {
   public:
     parsing(const std::string &input_name, unsigned long line,
