@@ -12,12 +12,18 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_compile_options(-Wall -Wextra)
 
+add_library (my_genx OBJECT EXCLUDE_FROM_ALL "detail/genx/genx.c" "detail/genx/charProps.c")
+
+aux_source_directory ("detail/expat" EXPAT_SOURCES)
+add_library (my_expat OBJECT EXCLUDE_FROM_ALL ${EXPAT_SOURCES})
+
+target_compile_definitions(my_expat PRIVATE -DHAVE_EXPAT_CONFIG_H=1)
+target_include_directories (my_expat PRIVATE "detail/expat")
+
 # Add source to this project's executable.
 add_library (xmlcc "parser.cxx" "parser.hxx" "parser.txx"
-	"exception.cxx" "exception.hxx" "qname.cxx" "qname.hxx"
-	"content.cxx" "serializer.hxx" "serializer.cxx"
-	"detail/genx/genx.c"
-	"detail/genx/charProps.c")
+	"exception.hxx" "qname.cxx" "qname.hxx"
+	"content.cxx" "serializer.hxx" "serializer.cxx")
 
 target_include_directories(xmlcc 
 	INTERFACE
@@ -26,7 +32,17 @@ target_include_directories(xmlcc
 		"detail/genx"
 )
 
-target_link_libraries(xmlcc EXPAT::EXPAT)
+if (XMLCC_USE_EXTERNAL_EXPAT)
+    target_link_libraries(xmlcc EXPAT::EXPAT)
+else ()
+    target_link_libraries(xmlcc "my_expat")
+endif ()
+
+if (XMLCC_USE_EXTERNAL_GENX)
+    target_link_libraries(xmlcc "genx")
+else ()
+    target_link_libraries(xmlcc "my_genx")
+endif ()
 
 set_target_properties(xmlcc PROPERTIES
 	VERSION 0.1.0

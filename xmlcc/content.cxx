@@ -1,5 +1,5 @@
-#include <xmlcc/content.hxx>
 #include <iostream>
+#include <xmlcc/content.hxx>
 
 namespace xmlcc {
   std::ostream &operator<<(std::ostream &os, const content &c)

@@ -19,7 +19,12 @@ option (XMLXX_CXX17 "Use C++17 features" ON)
 
 option (XMLXX_NO_EXCEPTIONS "Disable exception handling" OFF)
 
-find_package(EXPAT REQUIRED)
+option (XMLCC_USE_EXTERNAL_EXPAT "Use external expat" OFF)
+option (XMLCC_USE_EXTERNAL_GENX "Use external genx" OFF)
+
+if (XMLCC_USE_EXTERNAL_EXPAT)
+  find_package(EXPAT REQUIRED)
+endif ()
 
 include_directories(.)
 

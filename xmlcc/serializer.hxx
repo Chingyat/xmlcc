@@ -1,16 +1,15 @@
 #ifndef XMLCC_SERIALIZER_HXX
 #define XMLCC_SERIALIZER_HXX
 
-
+#include <xmlcc/content.hxx>
 #include <xmlcc/detail/export.h>
 #include <xmlcc/detail/fwd.hxx>
 #include <xmlcc/detail/macros.hxx>
-#include <xmlcc/content.hxx>
 
 #include <xmlcc/detail/genx/genx.h>
 
-#include <string>
 #include <iosfwd>
+#include <string>
 #include <vector>
 
 namespace xmlcc {
@@ -28,7 +27,10 @@ namespace xmlcc {
 
     ~serializer();
 
-    allocator_type get_allocator() const { return static_cast<const allocator_type &>(*this); }
+    allocator_type get_allocator() const
+    {
+      return static_cast<const allocator_type &>(*this);
+    }
 
   private:
     std::ostream *pos_;
@@ -46,7 +48,7 @@ namespace xmlcc {
 
     genxAttribute attr_;
     std::string value_;
-    
+
     void check_status(genxStatus s) const;
 
   public:

@@ -1,9 +1,9 @@
 #include <xmlcc/serializer.hxx>
 
-#include <iostream>
-#include <vector>
-#include <string>
 #include <cstring>
+#include <iostream>
+#include <string>
+#include <vector>
 
 namespace xmlcc {
 
@@ -24,10 +24,9 @@ namespace xmlcc {
     sender_.sendBounded = sendBounded_;
     sender_.flush = flush_;
 
-    XMLXX_TRY {
-      genxStatus s = genxStartDocSender(w_, &sender_);
-    }
-    XMLXX_CATCH (...) {
+    XMLXX_TRY { genxStatus s = genxStartDocSender(w_, &sender_); }
+    XMLXX_CATCH(...)
+    {
       genxDispose(w_);
 
       XMLXX_RETHROW;
@@ -53,7 +52,8 @@ namespace xmlcc {
 
   void serializer::dealloc_(void *userData, void *data)
   {
-    reinterpret_cast<serializer *>(userData)->deallocate(reinterpret_cast<char *>(data), 0);
+    reinterpret_cast<serializer *>(userData)->deallocate(
+        reinterpret_cast<char *>(data), 0);
   }
 
   genxStatus serializer::send_(void *userData, constUtf8 s)

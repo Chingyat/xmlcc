@@ -1,8 +1,8 @@
 #ifndef XMLCC_DETAIL_CONTENT_HXX
 #define XMLCC_DETAIL_CONTENT_HXX
 
-#include <xmlcc/detail/macros.hxx>
 #include <xmlcc/detail/export.h>
+#include <xmlcc/detail/macros.hxx>
 
 #include <iosfwd>
 

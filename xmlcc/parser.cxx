@@ -1,10 +1,18 @@
 #include <xmlcc/exception.hxx>
 #include <xmlcc/parser.hxx>
 
-#include <sstream>
 #include <iostream>
+#include <sstream>
 
 namespace xmlcc {
+  parsing::parsing(parser &p, const std::string &msg) XMLXX_NOEXCEPT
+      : parsing(p.input_name(), p.line(), p.column(), msg)
+  {
+    std::ostringstream ss;
+    ss << input_name_ << ':' << line_ << ':' << col_ << ':' << ' ' << msg_;
+    what_ = ss.str();
+  }
+
   parser::parser(std::istream &is, const std::string &name,
                  feature_type feature)
       : feature_(feature), event_(eof), state_(current_state),
@@ -256,8 +264,8 @@ namespace xmlcc {
           el.attr_map.emplace(qname_type::from_chars(a[0]),
                               attribute_value{a[1], false});
 #else
-          el.attr_map.insert(attribute_map_type::value_type(qname_type::from_chars(a[0]),
-                                            attribute_value{a[1], false}));
+          el.attr_map.insert(attribute_map_type::value_type(
+              qname_type::from_chars(a[0]), attribute_value{a[1], false}));
 #endif
 
           a += 2;
