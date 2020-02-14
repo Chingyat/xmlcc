@@ -6,14 +6,22 @@
 #include <xmlcc/detail/fwd.hxx>
 #include <xmlcc/detail/macros.hxx>
 
+#ifndef XMLCC_USE_EXTERNAL_GENX
 #include <xmlcc/detail/genx/genx.h>
+#else
+#include <genx.h>
+#endif // !XMLCC_USE_EXTERNAL_GENX
 
 #include <iosfwd>
 #include <string>
 #include <vector>
 
 namespace xmlcc {
-  class XMLCC_EXPORT serializer : private std::allocator<char> {
+  class XMLCC_EXPORT serializer
+#ifdef XMLXX_SERIALIZER_USE_ALLOCATOR
+      : private std::allocator<char>
+#endif
+  {
   public:
 #ifdef XMLXX_CXX11
     typedef enum content content_type;
@@ -21,16 +29,20 @@ namespace xmlcc {
     typedef struct content content_type;
 #endif
 
+#ifdef XMLXX_SERIALIZER_USE_ALLOCATOR
     typedef std::allocator<char> allocator_type;
+#endif
 
     serializer(std::ostream &os, const std::string &output_name);
 
     ~serializer();
 
+#ifdef XMLXX_SERIALIZER_USE_ALLOCATOR
     allocator_type get_allocator() const
     {
       return static_cast<const allocator_type &>(*this);
     }
+#endif
 
   private:
     std::ostream *pos_;
@@ -38,8 +50,10 @@ namespace xmlcc {
     genxWriter w_;
     genxSender sender_;
 
+#ifdef XMLXX_SERIALIZER_USE_ALLOCATOR
     static void *alloc_(void *userData, int size);
     static void dealloc_(void *userData, void *data);
+#endif
 
     static genxStatus send_(void *userData, constUtf8 s);
     static genxStatus sendBounded_(void *userData, constUtf8 start,

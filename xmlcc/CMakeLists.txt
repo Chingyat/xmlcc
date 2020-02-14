@@ -7,23 +7,31 @@ if (XMLXX_NO_EXCEPTIONS)
 	add_compile_options(-fno-exceptions)
 endif ()
 
+if (WIN32)
+	add_compile_definitions (_CRT_SECURE_NO_WARNINGS)
+endif()
+
 configure_file(detail/config.hxx.in xmlcc/detail/config.hxx)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-add_compile_options(-Wall -Wextra)
 
 add_library (my_genx OBJECT EXCLUDE_FROM_ALL "detail/genx/genx.c" "detail/genx/charProps.c")
 
 aux_source_directory ("detail/expat" EXPAT_SOURCES)
 add_library (my_expat OBJECT EXCLUDE_FROM_ALL ${EXPAT_SOURCES})
-
-target_compile_definitions(my_expat PRIVATE -DHAVE_EXPAT_CONFIG_H=1)
+target_compile_definitions (my_expat PUBLIC "XML_STATIC")
+if (NOT WIN32)
+  target_compile_definitions(my_expat PRIVATE -DHAVE_EXPAT_CONFIG_H=1)
+endif ()
 target_include_directories (my_expat PRIVATE "detail/expat")
 
 # Add source to this project's executable.
 add_library (xmlcc "parser.cxx" "parser.hxx" "parser.txx"
 	"exception.hxx" "qname.cxx" "qname.hxx"
 	"content.cxx" "serializer.hxx" "serializer.cxx")
+
+get_target_property(position_independent_code xmlcc POSITION_INDEPENDENT_CODE)
+
+set_property(TARGET my_expat my_genx PROPERTY POSITION_INDEPENDENT_CODE ${position_independent_code})
 
 target_include_directories(xmlcc 
 	INTERFACE
@@ -70,6 +78,15 @@ install(FILES
 	detail/macros.hxx
 	DESTINATION include/xmlcc/detail)
 
-install(FILES
-	detail/genx/genx.h
-	DESTINATION include/xmlcc/detail/genx)
+if (NOT XMLCC_USE_EXTERNAL_GENX)
+	install (FILES
+		detail/genx/genx.h
+		DESTINATION include/xmlcc/detail/genx)
+endif ()
+
+if (NOT XMLCC_USE_EXTERNAL_EXPAT)
+	install (FILES
+		detail/expat/expat.h
+		detail/expat/expat_external.h
+		DESTINATION include/xmlcc/detail/expat)
+endif ()

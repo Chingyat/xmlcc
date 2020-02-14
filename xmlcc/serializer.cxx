@@ -17,14 +17,24 @@ namespace xmlcc {
   serializer::serializer(std::ostream &os, const std::string &output_name)
       : pos_(&os), output_name_(output_name), attr_()
   {
+#ifdef XMLXX_SERIALIZER_USE_ALLOCATOR
     w_ = genxNew(alloc_, dealloc_, this); // FIXME: use allocator
+#else
+    w_ = genxNew(0, 0, 0);
+#endif
     genxSetUserData(w_, this);
 
     sender_.send = send_;
     sender_.sendBounded = sendBounded_;
     sender_.flush = flush_;
 
-    XMLXX_TRY { genxStatus s = genxStartDocSender(w_, &sender_); }
+    XMLXX_TRY
+    {
+      genxStatus s = genxStartDocSender(w_, &sender_);
+      if (s) {
+        XMLXX_THROW s;
+      }
+    }
     XMLXX_CATCH(...)
     {
       genxDispose(w_);
@@ -45,6 +55,7 @@ namespace xmlcc {
     check_status(s);
   }
 
+#ifdef XMLXX_SERIALIZER_USE_ALLOCATOR
   void *serializer::alloc_(void *userData, int size)
   {
     return reinterpret_cast<serializer *>(userData)->allocate(size);
@@ -55,6 +66,7 @@ namespace xmlcc {
     reinterpret_cast<serializer *>(userData)->deallocate(
         reinterpret_cast<char *>(data), 0);
   }
+#endif
 
   genxStatus serializer::send_(void *userData, constUtf8 s)
   {

@@ -9,4 +9,8 @@
 
 #cmakedefine XMLXX_NO_EXCEPTIONS
 
+#cmakedefine XMLCC_USE_EXTERNAL_EXPAT
+
+#cmakedefine XMLCC_USE_EXTERNAL_GENX
+
 #endif // !XMLCC_DETAIL_CONFIG_HXX

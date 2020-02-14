@@ -11,19 +11,15 @@ namespace xmlcc {
 #endif
     case content::empty:
       return os << "empty";
-      break;
+
     case content::simple:
       return os << "simple";
-      break;
+
     case content::complex:
       return os << "complex";
-      break;
+
     case content::mixed:
       return os << "mixed";
-      break;
-
-    default:
-      std::terminate();
     }
   }
 
