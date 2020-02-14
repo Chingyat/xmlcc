@@ -5,57 +5,28 @@
 #include <sstream>
 
 namespace xmlcc {
+ parsing::parsing(const std::string &input, unsigned long line, 
+                  unsigned long column, const std::string &msg)
+      : input_name_(input)
+      , line_(line)
+      , column_(column)
+      , msg_(msg)
+ {
+   std::ostringstream ss;
+   ss << input_name_ << ':' << line_ << ':' << column_ << ": " << msg;
+   what_ = ss.str();
+ }
 
-  std::ostream &operator<<(std::ostream &os, content c)
+
+  parsing::parsing(parser &p, const std::string &msg)
+      : input_name_(p.input_name())
+      , line_(p.line())
+      , column_(p.column())
+      , msg_(msg)
   {
-    return os << [](content c) {
-      switch (c) {
-      case content::empty:
-        return "empty";
-        break;
-      case content::simple:
-        return "simple";
-        break;
-      case content::complex:
-        return "complex";
-        break;
-      case content::mixed:
-        return "mixed";
-        break;
-      default:
-        std::terminate();
-        break;
-      }
-    }(c);
-  }
-
-      case xmlcc::parser::end_element:
-        return "end element";
-
-      case xmlcc::parser::start_attribute:
-        return "start attribute";
-
-      case xmlcc::parser::end_attribute:
-        return "end attribute";
-
-      case xmlcc::parser::characters:
-        return "characters";
-
-      case xmlcc::parser::eof:
-        return "eof";
-
-      }
-    }
-  } // namespace
-
-  std::ostream &operator<<(std::ostream &os, parser::event_type e)
-  {
-    return os << to_string(e);
-  }
-
-  std::ostream &operator<<(std::ostream &os, content c)
-  {
-    return os << to_string(c);
+    std::ostringstream ss;
+    ss << input_name_ << ':' << line_ << ':' << column_ << ": " << msg_;
+    what_ = ss.str();
   }
 
   parser::parser(std::istream &is, const std::string &name,

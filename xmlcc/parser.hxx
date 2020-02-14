@@ -14,19 +14,25 @@
 #include <xmlcc/exception.hxx>
 
 namespace xmlcc {
+  class parsing : public exception {
+  public:
+    parsing(const std::string &input, unsigned long line, 
+            unsigned long column, const std::string &msg);
 
-#if XMLXX_CXX11
-  enum class content {
-#else
-  enum content {
-#endif
-    empty,
-    simple,
-    complex,
-    mixed,
+    parsing(parser &p, const std::string &msg);
+
+    const std::string &input_name() const XMLXX_NOEXCEPT { return input_name_; }
+    unsigned long line() const XMLXX_NOEXCEPT { return line_; }
+    unsigned long column() const XMLXX_NOEXCEPT { return line_; }
+    const std::string &message() const XMLXX_NOEXCEPT { return msg_; }
+    const char *what() const XMLXX_NOEXCEPT { return what_.c_str(); }
+
+  private:
+    std::string input_name_;
+    unsigned long line_, column_;
+    std::string msg_;
+    std::string what_;
   };
-
-  std::ostream& operator<<(std::ostream& os, content c);
 
   class XMLCC_EXPORT parser {
   public:
