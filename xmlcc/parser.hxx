@@ -3,29 +3,27 @@
 
 #include <expat.h>
 
-#include <algorithm>
 #include <cassert>
-#include <iostream>
 #include <map>
-#include <string>
-#include <utility>
 #include <vector>
 
-#include <xmlcc/detail/config.hxx>
-#include <xmlcc/detail/export.hxx>
+#include <xmlcc/content.hxx>
+#include <xmlcc/detail/export.h>
+#include <xmlcc/detail/macros.hxx>
 #include <xmlcc/qname.hxx>
+#include <xmlcc/exception.hxx>
 
 namespace xmlcc {
 
 #if XMLXX_CXX11
-  enum class content : unsigned char {
+  enum class content {
 #else
   enum content {
 #endif
     empty,
     simple,
     complex,
-    mixed
+    mixed,
   };
 
   std::ostream& operator<<(std::ostream& os, content c);
@@ -52,7 +50,11 @@ namespace xmlcc {
       eof
     };
 
+#ifdef XMLXX_CXX11
     typedef enum content content_type;
+#else
+    typedef struct content content_type;
+#endif
 
     // creates the parser
     parser(std::istream &is, const std::string &name,
@@ -96,8 +98,8 @@ namespace xmlcc {
 
     XML_Parser p_;
 
-    std::vector<std::pair<qname_type, std::string> > typedef attributes;
-
+    std::vector<std::pair<qname_type, std::string>> typedef attributes;
+    
     // attribute events of current element
     attributes attr_;
 
@@ -315,7 +317,7 @@ namespace xmlcc {
   public:
     template <typename T> T attribute(const std::string &name) const;
 
-#if !XMLXX_CXX11
+#ifndef XMLXX_CXX11
     template <typename T>
     T attribute(const std::string &name, const T &default_value) const;
 #else
@@ -327,7 +329,7 @@ namespace xmlcc {
 
     template <typename T> T element(const std::string &name);
 
-#if !XMLXX_CXX11
+#ifndef XMLXX_CXX11
     template <typename T>
     T element(const std::string &name, const T &default_value);
 #else
@@ -381,24 +383,6 @@ namespace xmlcc {
 
     iterator begin() { return iterator(this); }
     iterator end() { return iterator(); }
-  };
-
-  template <typename T> struct value_traits {
-    template <typename Parser>
-    static T parse(const std::string &s, Parser const &)
-    {
-      T r;
-      std::istringstream(s) >> r;
-      return r;
-    }
-
-    template <typename Serializer>
-    static std::string serialize(const T &v, Serializer const &)
-    {
-      std::ostringstream ss;
-      ss << v;
-      return ss.str();
-    }
   };
 
   XMLCC_EXPORT std::ostream &operator<<(std::ostream &os, parser::event_type e);

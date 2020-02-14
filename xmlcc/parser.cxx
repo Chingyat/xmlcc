@@ -1,32 +1,33 @@
 #include <xmlcc/exception.hxx>
 #include <xmlcc/parser.hxx>
 
+#include <iostream>
 #include <sstream>
 
 namespace xmlcc {
 
-  namespace {
-    const char *to_string(content c) XMLXX_NOEXCEPT
-    {
+  std::ostream &operator<<(std::ostream &os, content c)
+  {
+    return os << [](content c) {
       switch (c) {
       case content::empty:
         return "empty";
-
+        break;
       case content::simple:
         return "simple";
-
+        break;
       case content::complex:
         return "complex";
-
+        break;
       case content::mixed:
         return "mixed";
+        break;
+      default:
+        std::terminate();
+        break;
       }
-    }
-    const char *to_string(parser::event_type e) XMLXX_NOEXCEPT
-    {
-      switch (e) {
-      case xmlcc::parser::start_element:
-        return "start element";
+    }(c);
+  }
 
       case xmlcc::parser::end_element:
         return "end element";
@@ -206,6 +207,7 @@ namespace xmlcc {
         }
       }
 
+    /* fallthrough */
     case 2:
       event_ = eof;
     }
@@ -302,12 +304,12 @@ namespace xmlcc {
       if (p->feature_ & receive_attributes_map) {
         const char **a = atts;
         while (a[0]) {
-#if XMLXX_CXX11
+#ifdef XMLXX_CXX11
           el.attr_map.emplace(qname_type::from_chars(a[0]),
                               attribute_value{a[1], false});
 #else
-          el.attr_map.insert(std::make_pair(qname_type::from_chars(a[0]),
-                                            attribute_value{a[1], false}));
+          el.attr_map.insert(attribute_map_type::value_type(
+              qname_type::from_chars(a[0]), attribute_value{a[1], false}));
 #endif
 
           a += 2;
@@ -319,7 +321,7 @@ namespace xmlcc {
         p->attr_.clear();
         const char **a = atts;
         while (a[0]) {
-#if XMLXX_CXX11
+#ifdef XMLXX_CXX11
           p->attr_.emplace_back(qname_type::from_chars(a[0]), a[1]);
 #else
           p->attr_.push_back(
@@ -338,7 +340,9 @@ namespace xmlcc {
 
   void parser::end_element_(void *userdata, const XML_Char *name)
   {
+    (void)name;
     parser *const p = reinterpret_cast<parser *>(userdata);
+    assert(p->elem_.back().name.name() == name);
 
     if (p->parsing_state_.suspended_) {
       assert(p->ended_ == false);
@@ -389,6 +393,34 @@ namespace xmlcc {
   unsigned long parser::column() const XMLXX_NOEXCEPT
   {
     return XML_GetCurrentColumnNumber(p_);
+  }
+
+  std::ostream &operator<<(std::ostream &os, parser::event_type e)
+  {
+    return os << [](parser::event_type e) -> const char * {
+      switch (e) {
+      case xmlcc::parser::start_element:
+        return "start element";
+
+      case xmlcc::parser::end_element:
+        return "end element";
+
+      case xmlcc::parser::start_attribute:
+        return "start attribute";
+
+      case xmlcc::parser::end_attribute:
+        return "end attribute";
+
+      case xmlcc::parser::characters:
+        return "characters";
+
+      case xmlcc::parser::eof:
+        return "eof";
+
+      default:
+        std::terminate();
+      }
+    }(e);
   }
 
 } // namespace xmlcc

@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include <xmlcc/detail/config.hxx>
-#include <xmlcc/detail/export.hxx>
+#include <xmlcc/detail/export.h>
+#include <xmlcc/detail/macros.hxx>
 
 namespace xmlcc {
 
@@ -41,9 +41,11 @@ namespace xmlcc {
     std::string name_;
   };
 
-  XMLCC_EXPORT bool operator<(const qname &lhs, const qname &rhs) XMLXX_NOEXCEPT;
+  XMLCC_EXPORT bool operator<(const qname &lhs,
+                              const qname &rhs) XMLXX_NOEXCEPT;
 
-  XMLCC_EXPORT bool operator==(const qname &lhs, const qname &rhs) XMLXX_NOEXCEPT;
+  XMLCC_EXPORT bool operator==(const qname &lhs,
+                               const qname &rhs) XMLXX_NOEXCEPT;
 
   XMLCC_EXPORT std::ostream &operator<<(std::ostream &os, const qname &name);
 } // namespace xmlcc

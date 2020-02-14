@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+
 using namespace xmlcc;
 
 int main()
@@ -23,19 +24,19 @@ int main()
       std::cout << e << ' ';
       switch (e) {
       case xmlcc::parser::start_element:
-        std::cout << quoted(p.name());
+        std::cout << std::quoted(p.name());
         break;
       case xmlcc::parser::end_element:
-        std::cout << quoted(p.name());
+        std::cout << std::quoted(p.name());
         break;
       case xmlcc::parser::start_attribute:
-        std::cout << quoted(p.name());
+        std::cout << std::quoted(p.name());
         break;
       case xmlcc::parser::end_attribute:
-        std::cout << quoted(p.name());
+        std::cout << std::quoted(p.name());
         break;
       case xmlcc::parser::characters:
-        std::cout << quoted(p.value());
+        std::cout << std::quoted(p.value());
         break;
       case xmlcc::parser::eof:
         break;
