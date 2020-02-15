@@ -1,9 +1,5 @@
-// file      : xml/details/export.hxx
-// copyright : Copyright (c) 2013-2014 Code Synthesis Tools CC
-// license   : MIT; see accompanying LICENSE file
-
-#ifndef XML_DETAILS_EXPORT_HXX
-#define XML_DETAILS_EXPORT_HXX
+#ifndef XMLCC_DETAIL_EXPORT_HXX
+#define XMLCC_DETAIL_EXPORT_HXX
 
 #include <xmlcc/detail/config.hxx>
 
@@ -33,4 +29,4 @@
 #  endif
 #endif
 
-#endif // XML_DETAILS_EXPORT_HXX
+#endif // XMLCC_DETAIL_EXPORT

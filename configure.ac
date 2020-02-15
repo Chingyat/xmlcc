@@ -2,9 +2,9 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([XMLCC], [0.2], [tsingyat@outlook.com])
+AC_INIT([XMLCC], [0.2.1], [tsingyat@outlook.com])
 AC_CONFIG_SRCDIR([example/example1.cxx])
-AC_CONFIG_HEADERS([config.h xmlcc/detail/config.hxx])
+AC_CONFIG_HEADERS([config.h xmlcc/detail/config.h])
 
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 AC_CONFIG_MACRO_DIRS([m4])

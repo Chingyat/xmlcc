@@ -2,7 +2,8 @@ lib_LTLIBRARIES = libxmlcc.la
 
 libxmlcc_la_SOURCES = parser.cxx qname.cxx serializer.cxx content.cxx \
   parser.hxx parser.txx qname.hxx serializer.hxx content.hxx exception.hxx \
-  value_traits.hxx detail/export.hxx detail/macros.hxx detail/fwd.hxx
+  value_traits.hxx detail/export.hxx detail/macros.hxx detail/fwd.hxx \
+  detail/config.hxx detail/config-vc.h
 
 libxmlcc_la_CPPFLAGS = -I$(top_srcdir)
 
