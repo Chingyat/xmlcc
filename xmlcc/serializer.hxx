@@ -2,7 +2,7 @@
 #define XMLCC_SERIALIZER_HXX
 
 #include <xmlcc/content.hxx>
-#include <xmlcc/detail/export.h>
+#include <xmlcc/detail/export.hxx>
 #include <xmlcc/detail/fwd.hxx>
 #include <xmlcc/detail/macros.hxx>
 

@@ -8,7 +8,7 @@
 #include <vector>
 
 #include <xmlcc/content.hxx>
-#include <xmlcc/detail/export.h>
+#include <xmlcc/detail/export.hxx>
 #include <xmlcc/detail/macros.hxx>
 #include <xmlcc/qname.hxx>
 #include <xmlcc/exception.hxx>

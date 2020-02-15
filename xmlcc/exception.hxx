@@ -1,7 +1,7 @@
 #ifndef XMLCC_EXCEPTION_HXX
 #define XMLCC_EXCEPTION_HXX
 
-#include <xmlcc/detail/export.h>
+#include <xmlcc/detail/export.hxx>
 #include <xmlcc/detail/fwd.hxx>
 #include <xmlcc/detail/macros.hxx>
 

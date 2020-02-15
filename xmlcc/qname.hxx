@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include <xmlcc/detail/export.h>
+#include <xmlcc/detail/export.hxx>
 #include <xmlcc/detail/macros.hxx>
 
 namespace xmlcc {

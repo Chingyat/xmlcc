@@ -11,7 +11,7 @@ if (WIN32)
 	add_compile_definitions (_CRT_SECURE_NO_WARNINGS)
 endif()
 
-configure_file(detail/config.hxx.in xmlcc/detail/config.hxx)
+configure_file(detail/config.hxx.cmake xmlcc/detail/config.hxx)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_library (my_genx OBJECT EXCLUDE_FROM_ALL "detail/genx/genx.c" "detail/genx/charProps.c")
@@ -90,3 +90,4 @@ if (NOT XMLCC_USE_EXTERNAL_EXPAT)
 		detail/expat/expat_external.h
 		DESTINATION include/xmlcc/detail/expat)
 endif ()
+

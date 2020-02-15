@@ -1,7 +1,7 @@
 #ifndef XMLCC_DETAIL_CONTENT_HXX
 #define XMLCC_DETAIL_CONTENT_HXX
 
-#include <xmlcc/detail/export.h>
+#include <xmlcc/detail/export.hxx>
 #include <xmlcc/detail/macros.hxx>
 
 #include <iosfwd>
@@ -22,7 +22,7 @@ namespace xmlcc {
 
   std::ostream &operator<<(std::ostream &os, const content &cnt);
 
-  struct XMLCC_NO_EXPORT content {
+  struct content {
     friend std::ostream &operator<<(std::ostream &os, const content &cnt);
 
     enum _enum { empty, simple, complex, mixed };
