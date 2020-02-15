@@ -68,7 +68,7 @@ namespace xmlcc {
 
     ~parser();
 
-#if XMLXX_CXX11
+#ifdef XMLXX_CXX11
     parser(const parser &) = delete;
     parser &operator=(const parser &) = delete;
 #else

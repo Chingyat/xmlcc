@@ -5,7 +5,7 @@
 #ifndef XML_DETAILS_EXPORT_HXX
 #define XML_DETAILS_EXPORT_HXX
 
-#include <xml/details/config.hxx>
+#include <xmlcc/detail/config.hxx>
 
 #ifdef XMLCC_STATIC_LIB
 #  define XMLCC_EXPORT

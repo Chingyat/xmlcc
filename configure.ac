@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([XMLCC], [0.1], [tsingyat@outlook.com])
+AC_INIT([XMLCC], [0.2], [tsingyat@outlook.com])
 AC_CONFIG_SRCDIR([example/example1.cxx])
 AC_CONFIG_HEADERS([config.h xmlcc/detail/config.hxx])
 
@@ -41,6 +41,12 @@ AS_IF([test "x$external_genx_found" != "xno"],
              [AC_MSG_ERROR([external genx requested but not found])])])
 
 AM_CONDITIONAL([XMLCC_USE_EXTERNAL_GENX], [test x"$with_external_genx" = "xyes"])
+
+AS_IF([test "x$enable_shared" = "xno"],
+      [AC_DEFINE([XMLCC_STATIC_LIB], [], [Build static libraries])],
+      [])
+
+AM_CONDITIONAL([XMLCC_STATIC_LIB], [test "x$enable_shared" = "xno"])
 
 # Checks for libraries.
 

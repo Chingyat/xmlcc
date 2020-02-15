@@ -14,10 +14,10 @@ endif()
 configure_file(detail/config.hxx.cmake xmlcc/detail/config.hxx)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_library (my_genx OBJECT EXCLUDE_FROM_ALL "detail/genx/genx.c" "detail/genx/charProps.c")
+add_library (my_genx STATIC EXCLUDE_FROM_ALL "detail/genx/genx.c" "detail/genx/charProps.c")
 
 aux_source_directory ("detail/expat" EXPAT_SOURCES)
-add_library (my_expat OBJECT EXCLUDE_FROM_ALL ${EXPAT_SOURCES})
+add_library (my_expat STATIC EXCLUDE_FROM_ALL ${EXPAT_SOURCES})
 target_compile_definitions (my_expat PUBLIC "XML_STATIC")
 if (NOT WIN32)
   target_compile_definitions(my_expat PRIVATE -DHAVE_EXPAT_CONFIG_H=1)
@@ -56,10 +56,9 @@ set_target_properties(xmlcc PROPERTIES
 	VERSION 0.1.0
 	SOVERSION 0)
 
-include(GenerateExportHeader)
-generate_export_header(xmlcc EXPORT_FILE_NAME xmlcc/detail/export.h)
-
-install(TARGETS xmlcc DESTINATION ${LIBRARY_INSTALL_DIR})
+install(TARGETS xmlcc LIBRARY DESTINATION lib
+                      RUNTIME DESTINATION bin
+                      ARCHIVE DESTINATION lib)
 
 install(FILES
 	exception.hxx

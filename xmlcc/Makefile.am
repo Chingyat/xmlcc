@@ -2,9 +2,13 @@ lib_LTLIBRARIES = libxmlcc.la
 
 libxmlcc_la_SOURCES = parser.cxx qname.cxx serializer.cxx content.cxx \
   parser.hxx parser.txx qname.hxx serializer.hxx content.hxx exception.hxx \
-  value_traits.hxx detail/export.h detail/macros.hxx detail/fwd.hxx
+  value_traits.hxx detail/export.hxx detail/macros.hxx detail/fwd.hxx
 
 libxmlcc_la_CPPFLAGS = -I$(top_srcdir)
+
+if !XMLCC_STATIC_LIB
+  libxmlcc_la_CPPFLAGS += -DXMLCC_DYNAMIC_LIB
+endif
 
 if !XMLCC_USE_EXTERNAL_EXPAT
   libxmlcc_la_SOURCES += detail/expat/xmlparse.c \
