@@ -9,7 +9,7 @@ AC_CONFIG_HEADERS([config.h xmlcc/detail/config.h])
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 AC_CONFIG_MACRO_DIRS([m4])
 
-LT_INIT([win32-dll])
+LT_INIT([win32-dll disable-static])
 
 # Checks for programs.
 AC_PROG_CXX
