@@ -17,6 +17,8 @@ AC_PROG_CXX
 AC_ARG_WITH([external-expat],
     AS_HELP_STRING([--with-external-expat], [Use external expat instead of the bundled one]))
 
+AC_MSG_CHECKING([whether we should link to external expat instead of the bundled one])
+
 AS_IF([test "x$with_external_expat" = "xyes"],
       [AC_CHECK_LIB([expat], [XML_ParserCreate], [LIBS="$LIBS -lexpat "; external_expat_found=yes], [external_expat_found=no])],
       [external_expat_found=no])
@@ -26,10 +28,14 @@ AS_IF([test "x$external_expat_found" != "xno"],
       [AS_IF([test "x$with_external_expat" = "xyes"],
              [AC_MSG_ERROR([external expat requested but not found])])])
 
+AC_MSG_RESULT([$external_expat_found])
+
 AM_CONDITIONAL([XMLCC_USE_EXTERNAL_EXPAT], [test x"$with_external_expat" = "xyes"])
 
 AC_ARG_WITH([external-genx],
     AS_HELP_STRING([--with-external-genx], [Use external genx instead of the bundled one]))
+
+AC_MSG_CHECKING([whether we should link to external genx instead of the bundled one])
 
 AS_IF([test "x$with_external_genx" = "xyes"],
       [AC_CHECK_LIB([genx], [main], [LIBS="$LIBS -lgenx "; external_genx_found=yes], [external_genx_found=no])],
@@ -40,6 +46,8 @@ AS_IF([test "x$external_genx_found" != "xno"],
       [AS_IF([test "x$with_external_genx" = "xyes"],
              [AC_MSG_ERROR([external genx requested but not found])])])
 
+AC_MSG_RESULT([$external_genx_found])
+
 AM_CONDITIONAL([XMLCC_USE_EXTERNAL_GENX], [test x"$with_external_genx" = "xyes"])
 
 AS_IF([test "x$enable_shared" = "xno"],
@@ -48,15 +56,7 @@ AS_IF([test "x$enable_shared" = "xno"],
 
 AM_CONDITIONAL([XMLCC_STATIC_LIB], [test "x$enable_shared" = "xno"])
 
-# Checks for libraries.
-
-# Checks for header files.
-
-# Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
-
-# Checks for library functions.
-
 
 AC_CONFIG_FILES([Makefile
                  xmlcc/Makefile

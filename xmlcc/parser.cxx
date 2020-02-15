@@ -5,24 +5,18 @@
 #include <sstream>
 
 namespace xmlcc {
- parsing::parsing(const std::string &input, unsigned long line, 
-                  unsigned long column, const std::string &msg)
-      : input_name_(input)
-      , line_(line)
-      , column_(column)
-      , msg_(msg)
- {
-   std::ostringstream ss;
-   ss << input_name_ << ':' << line_ << ':' << column_ << ": " << msg;
-   what_ = ss.str();
- }
-
+  parsing::parsing(const std::string &input, unsigned long line,
+                   unsigned long column, const std::string &msg)
+      : input_name_(input), line_(line), column_(column), msg_(msg)
+  {
+    std::ostringstream ss;
+    ss << input_name_ << ':' << line_ << ':' << column_ << ": " << msg;
+    what_ = ss.str();
+  }
 
   parsing::parsing(parser &p, const std::string &msg)
-      : input_name_(p.input_name())
-      , line_(p.line())
-      , column_(p.column())
-      , msg_(msg)
+      : input_name_(p.input_name()), line_(p.line()), column_(p.column()),
+        msg_(msg)
   {
     std::ostringstream ss;
     ss << input_name_ << ':' << line_ << ':' << column_ << ": " << msg_;
