@@ -11,7 +11,7 @@ namespace xmlcc {
 
   class XMLCC_EXPORT exception : public std::exception {
   public:
-    const char *what() const XMLXX_NOEXCEPT { return "xmlcc"; }
+    const char *what() const XMLCC_NOEXCEPT { return "xmlcc"; }
   };
 
 } // namespace xmlcc

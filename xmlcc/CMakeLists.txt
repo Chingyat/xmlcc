@@ -3,7 +3,7 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-if (XMLXX_NO_EXCEPTIONS)
+if (XMLCC_NO_EXCEPTIONS)
 	add_compile_options(-fno-exceptions)
 endif ()
 

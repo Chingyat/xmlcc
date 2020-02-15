@@ -10,7 +10,7 @@ namespace xmlcc {
 
   class XMLCC_EXPORT qname {
   public:
-    qname() XMLXX_NOEXCEPT {}
+    qname() XMLCC_NOEXCEPT {}
     qname(const std::string &name) : name_(name) {}
     qname(const std::string &ns, const std::string &name) : ns_(ns), name_(name)
     {
@@ -27,7 +27,7 @@ namespace xmlcc {
     const std::string &namespace_() const { return ns_; }
     const std::string &name() const { return name_; }
 
-    void swap(qname &other) XMLXX_NOEXCEPT
+    void swap(qname &other) XMLCC_NOEXCEPT
     {
       using std::swap;
       swap(prefix_, other.prefix_);
@@ -42,10 +42,10 @@ namespace xmlcc {
   };
 
   XMLCC_EXPORT bool operator<(const qname &lhs,
-                              const qname &rhs) XMLXX_NOEXCEPT;
+                              const qname &rhs) XMLCC_NOEXCEPT;
 
   XMLCC_EXPORT bool operator==(const qname &lhs,
-                               const qname &rhs) XMLXX_NOEXCEPT;
+                               const qname &rhs) XMLCC_NOEXCEPT;
 
   XMLCC_EXPORT std::ostream &operator<<(std::ostream &os, const qname &name);
 } // namespace xmlcc

@@ -7,7 +7,7 @@
 #include <iosfwd>
 
 namespace xmlcc {
-#ifdef XMLXX_CXX11
+#ifdef XMLCC_CXX11
   enum class content : unsigned char {
     empty,
     simple,
@@ -29,12 +29,12 @@ namespace xmlcc {
 
     content(_enum v) : v_(v) {}
 
-    bool operator==(const content &other) const XMLXX_NOEXCEPT
+    bool operator==(const content &other) const XMLCC_NOEXCEPT
     {
       return v_ == other.v_;
     }
 
-    bool operator!=(const content &other) const XMLXX_NOEXCEPT
+    bool operator!=(const content &other) const XMLCC_NOEXCEPT
     {
       return !(*this == other);
     }

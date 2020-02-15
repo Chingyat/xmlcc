@@ -1,13 +1,13 @@
 #ifndef XMLCC_DETAIL_CONFIG_VC_H
 #define XMLCC_DETAIL_CONFIG_VC_H
 
-#define XMLXX_CXX11
+#define XMLCC_CXX11
 
-#define XMLXX_CXX14
+#define XMLCC_CXX14
 
-#define XMLXX_CXX17
+#define XMLCC_CXX17
 
-// #undef XMLXX_NO_EXCEPTIONS
+// #undef XMLCC_NO_EXCEPTIONS
 
 // #undef XMLCC_USE_EXTERNAL_EXPAT
 

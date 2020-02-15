@@ -1,13 +1,13 @@
 #ifndef XMLCC_DETAIL_CONFIG_HXX
 #define XMLCC_DETAIL_CONFIG_HXX
 
-#cmakedefine XMLXX_CXX11
+#cmakedefine XMLCC_CXX11
 
-#cmakedefine XMLXX_CXX14
+#cmakedefine XMLCC_CXX14
 
-#cmakedefine XMLXX_CXX17
+#cmakedefine XMLCC_CXX17
 
-#cmakedefine XMLXX_NO_EXCEPTIONS
+#cmakedefine XMLCC_NO_EXCEPTIONS
 
 #cmakedefine XMLCC_USE_EXTERNAL_EXPAT
 

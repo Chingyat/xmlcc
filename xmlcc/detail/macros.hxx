@@ -3,65 +3,65 @@
 
 #include <xmlcc/detail/config.hxx>
 
-#ifndef XMLXX_NOEXCEPT
-#ifdef XMLXX_CXX11
-#define XMLXX_NOEXCEPT noexcept
+#ifndef XMLCC_NOEXCEPT
+#ifdef XMLCC_CXX11
+#define XMLCC_NOEXCEPT noexcept
 #else
-#define XMLXX_NOEXCEPT throw()
+#define XMLCC_NOEXCEPT throw()
 #endif
 #endif
 
-#ifndef XMLXX_TRY
-#ifndef XMLXX_NO_EXCEPTIONS
-#define XMLXX_TRY try
+#ifndef XMLCC_TRY
+#ifndef XMLCC_NO_EXCEPTIONS
+#define XMLCC_TRY try
 #else
-#define XMLXX_TRY
+#define XMLCC_TRY
 #endif
 #endif
 
-#ifndef XMLXX_CONSTEXPR
-#ifdef XMLXX_CXX11
-#define XMLXX_CONSTEXPR constexpr
+#ifndef XMLCC_CONSTEXPR
+#ifdef XMLCC_CXX11
+#define XMLCC_CONSTEXPR constexpr
 #else
-#define XMLXX_CONSTEXPR
+#define XMLCC_CONSTEXPR
 #endif
 #endif
 
-#ifndef XMLXX_CATCH
-#ifndef XMLXX_NO_EXCEPTIONS
-#define XMLXX_CATCH catch
+#ifndef XMLCC_CATCH
+#ifndef XMLCC_NO_EXCEPTIONS
+#define XMLCC_CATCH catch
 #else
-#define XMLXX_CATCH(...) if (false)
+#define XMLCC_CATCH(...) if (false)
 #endif
 #endif
 
-#ifndef XMLXX_THROW
-#ifndef XMLXX_NO_EXCEPTIONS
-#define XMLXX_THROW throw
+#ifndef XMLCC_THROW
+#ifndef XMLCC_NO_EXCEPTIONS
+#define XMLCC_THROW throw
 #else
-#define XMLXX_THROW std::terminate(),
+#define XMLCC_THROW std::terminate(),
 #endif
 #endif
 
-#ifndef XMLXX_RETHROW
-#ifndef XMLXX_NO_EXCEPTIONS
-#define XMLXX_RETHROW throw
+#ifndef XMLCC_RETHROW
+#ifndef XMLCC_NO_EXCEPTIONS
+#define XMLCC_RETHROW throw
 #else
-#define XMLXX_RETHROW std::terminate()
+#define XMLCC_RETHROW std::terminate()
 #endif
 #endif
 
-#ifdef XMLXX_CXX11
-#define XMLXX_MOVE(x) std::move(x)
+#ifdef XMLCC_CXX11
+#define XMLCC_MOVE(x) std::move(x)
 #else
-#define XMLXX_MOVE(x) x
+#define XMLCC_MOVE(x) x
 #endif
 
-#ifndef XMLXX_STRING_CONST_REF
-#ifdef XMLXX_CXX17
-#define XMLXX_STRING_CONST_REF std::string_view
+#ifndef XMLCC_STRING_CONST_REF
+#ifdef XMLCC_CXX17
+#define XMLCC_STRING_CONST_REF std::string_view
 #else
-#define XMLXX_STRING_CONST_REF const std::string &
+#define XMLCC_STRING_CONST_REF const std::string &
 #endif
 #endif
 

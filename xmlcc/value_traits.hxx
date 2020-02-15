@@ -8,6 +8,8 @@
 
 namespace xmlcc {
   template <typename T> struct value_traits {
+    T typedef value_type;
+
     static T parse(const std::string &s, parser const &)
     {
       T r;
@@ -15,13 +17,13 @@ namespace xmlcc {
       return r;
     }
 
-    // template <typename Serializer>
-    // static std::string serialize(const T &v, Serializer const &)
-    // {
-    //   std::ostringstream ss;
-    //   ss << v;
-    //   return ss.str();
-    // }
+    template <typename Serializer>
+    static std::string serialize(const T &v, Serializer const &)
+    {
+      std::ostringstream ss;
+      ss << v;
+      return ss.str();
+    }
   };
 } // namespace xmlcc
 

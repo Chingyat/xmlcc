@@ -3,7 +3,7 @@
 
 namespace xmlcc {
 
-  bool operator<(const qname &lhs, const qname &rhs) XMLXX_NOEXCEPT
+  bool operator<(const qname &lhs, const qname &rhs) XMLCC_NOEXCEPT
   {
     if (lhs.namespace_() < rhs.namespace_()) {
       return true;
@@ -14,7 +14,7 @@ namespace xmlcc {
     return false;
   }
 
-  bool operator==(const qname &lhs, const qname &rhs) XMLXX_NOEXCEPT
+  bool operator==(const qname &lhs, const qname &rhs) XMLCC_NOEXCEPT
   {
     return lhs.namespace_() == rhs.namespace_() && lhs.name() == rhs.name();
   }

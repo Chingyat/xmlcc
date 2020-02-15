@@ -46,7 +46,7 @@ namespace xmlcc {
 
   // suspends the parser
   // called in handler when events are ready
-  void parser::suspend(event_type reason) XMLXX_NOEXCEPT
+  void parser::suspend(event_type reason) XMLCC_NOEXCEPT
   {
     assert(!parsing_state_.suspended_);
     event_ = reason;
@@ -61,7 +61,7 @@ namespace xmlcc {
 
   // aborts the parser
   // called in handler on error
-  void parser::abort(std::exception_ptr const &exc) XMLXX_NOEXCEPT
+  void parser::abort(std::exception_ptr const &exc) XMLCC_NOEXCEPT
   {
     XML_Status s = XML_StopParser(p_, false);
     if (s == XML_STATUS_ERROR) {
@@ -168,7 +168,7 @@ namespace xmlcc {
         if (parsing_state_.xml_status_ == XML_STATUS_ERROR) {
           if (exc_)
             std::rethrow_exception(exc_);
-          XMLXX_THROW(parsing(*this, XML_ErrorString(XML_GetErrorCode(p_))));
+          XMLCC_THROW(parsing(*this, XML_ErrorString(XML_GetErrorCode(p_))));
         }
       }
 
@@ -251,7 +251,7 @@ namespace xmlcc {
   {
     parser *const p = reinterpret_cast<parser *>(userdata);
 
-    XMLXX_TRY
+    XMLCC_TRY
     {
       if (!p->elem_.empty()) {
         content_type c = p->elem_.back().content;
@@ -260,7 +260,7 @@ namespace xmlcc {
           std::ostringstream ss;
           ss << "unexpected element in " << p->elem_.back().content
              << " content";
-          XMLXX_THROW(parsing(*p, ss.str()));
+          XMLCC_THROW(parsing(*p, ss.str()));
         }
       }
       element_entry el;
@@ -269,7 +269,7 @@ namespace xmlcc {
       if (p->feature_ & receive_attributes_map) {
         const char **a = atts;
         while (a[0]) {
-#ifdef XMLXX_CXX11
+#ifdef XMLCC_CXX11
           el.attr_map.emplace(qname_type::from_chars(a[0]),
                               attribute_value{a[1], false});
 #else
@@ -286,7 +286,7 @@ namespace xmlcc {
         p->attr_.clear();
         const char **a = atts;
         while (a[0]) {
-#ifdef XMLXX_CXX11
+#ifdef XMLCC_CXX11
           p->attr_.emplace_back(qname_type::from_chars(a[0]), a[1]);
 #else
           p->attr_.push_back(
@@ -296,11 +296,11 @@ namespace xmlcc {
         }
       }
 
-      p->elem_.push_back(XMLXX_MOVE(el));
+      p->elem_.push_back(XMLCC_MOVE(el));
 
       p->suspend(start_element);
     }
-    XMLXX_CATCH(...) { p->abort(std::current_exception()); }
+    XMLCC_CATCH(...) { p->abort(std::current_exception()); }
   }
 
   void parser::end_element_(void *userdata, const XML_Char *name)
@@ -325,7 +325,7 @@ namespace xmlcc {
   {
     parser *const p = reinterpret_cast<parser *>(userdata);
     assert(len >= 0);
-    XMLXX_TRY
+    XMLCC_TRY
     {
       if (p->elem_.back().content == content::mixed) {
         p->char_.assign(s, len);
@@ -341,21 +341,21 @@ namespace xmlcc {
             std::ostringstream ss;
             ss << "non-whitespace characters in " << p->elem_.back().content
                << " content";
-            XMLXX_THROW(parsing(*p, ss.str()));
+            XMLCC_THROW(parsing(*p, ss.str()));
           }
           p->suspend(characters);
         }
       }
     }
-    XMLXX_CATCH(...) { p->abort(std::current_exception()); }
+    XMLCC_CATCH(...) { p->abort(std::current_exception()); }
   }
 
-  unsigned long parser::line() const XMLXX_NOEXCEPT
+  unsigned long parser::line() const XMLCC_NOEXCEPT
   {
     return XML_GetCurrentLineNumber(p_);
   }
 
-  unsigned long parser::column() const XMLXX_NOEXCEPT
+  unsigned long parser::column() const XMLCC_NOEXCEPT
   {
     return XML_GetCurrentColumnNumber(p_);
   }

@@ -21,11 +21,11 @@ namespace xmlcc {
 
     parsing(parser &p, const std::string &msg);
 
-    const std::string &input_name() const XMLXX_NOEXCEPT { return input_name_; }
-    unsigned long line() const XMLXX_NOEXCEPT { return line_; }
-    unsigned long column() const XMLXX_NOEXCEPT { return line_; }
-    const std::string &message() const XMLXX_NOEXCEPT { return msg_; }
-    const char *what() const XMLXX_NOEXCEPT { return what_.c_str(); }
+    const std::string &input_name() const XMLCC_NOEXCEPT { return input_name_; }
+    unsigned long line() const XMLCC_NOEXCEPT { return line_; }
+    unsigned long column() const XMLCC_NOEXCEPT { return line_; }
+    const std::string &message() const XMLCC_NOEXCEPT { return msg_; }
+    const char *what() const XMLCC_NOEXCEPT { return what_.c_str(); }
 
   private:
     std::string input_name_;
@@ -56,7 +56,7 @@ namespace xmlcc {
       eof
     };
 
-#ifdef XMLXX_CXX11
+#ifdef XMLCC_CXX11
     typedef enum content content_type;
 #else
     typedef struct content content_type;
@@ -68,7 +68,7 @@ namespace xmlcc {
 
     ~parser();
 
-#ifdef XMLXX_CXX11
+#ifdef XMLCC_CXX11
     parser(const parser &) = delete;
     parser &operator=(const parser &) = delete;
 #else
@@ -133,7 +133,7 @@ namespace xmlcc {
       attribute_map_type attr_map;
       mutable attribute_map_type::size_type attr_unhandled;
 
-      element_entry() XMLXX_NOEXCEPT : content(content::mixed),
+      element_entry() XMLCC_NOEXCEPT : content(content::mixed),
                                        attr_unhandled(false)
       {
       }
@@ -199,9 +199,9 @@ namespace xmlcc {
 
     void parse();
 
-    void suspend(event_type reason) XMLXX_NOEXCEPT;
+    void suspend(event_type reason) XMLCC_NOEXCEPT;
 
-    void abort(const std::exception_ptr &reason) XMLXX_NOEXCEPT;
+    void abort(const std::exception_ptr &reason) XMLCC_NOEXCEPT;
 
     static void XMLCALL start_element_(void *userdata, const XML_Char *name,
                                        const XML_Char **atts);
@@ -236,12 +236,12 @@ namespace xmlcc {
 
     const std::string &attribute(const qname_type &name) const;
 
-    bool attribute_present(const std::string &name) const XMLXX_NOEXCEPT
+    bool attribute_present(const std::string &name) const XMLCC_NOEXCEPT
     {
       return 0 != attribute_map().count(name);
     }
 
-    bool attribute_present(const qname_type &name) const XMLXX_NOEXCEPT
+    bool attribute_present(const qname_type &name) const XMLCC_NOEXCEPT
     {
       return 0 != attribute_map().count(name);
     }
@@ -311,11 +311,11 @@ namespace xmlcc {
     std::exception_ptr exc_;
 
   public:
-    unsigned long line() const XMLXX_NOEXCEPT;
+    unsigned long line() const XMLCC_NOEXCEPT;
 
-    unsigned long column() const XMLXX_NOEXCEPT;
+    unsigned long column() const XMLCC_NOEXCEPT;
 
-    const std::string &input_name() const XMLXX_NOEXCEPT { return input_name_; }
+    const std::string &input_name() const XMLCC_NOEXCEPT { return input_name_; }
 
   private:
     std::string input_name_;
@@ -323,7 +323,7 @@ namespace xmlcc {
   public:
     template <typename T> T attribute(const std::string &name) const;
 
-#ifndef XMLXX_CXX11
+#ifndef XMLCC_CXX11
     template <typename T>
     T attribute(const std::string &name, const T &default_value) const;
 #else
@@ -335,7 +335,7 @@ namespace xmlcc {
 
     template <typename T> T element(const std::string &name);
 
-#ifndef XMLXX_CXX11
+#ifndef XMLCC_CXX11
     template <typename T>
     T element(const std::string &name, const T &default_value);
 #else
@@ -350,24 +350,24 @@ namespace xmlcc {
       typedef const event_type &reference;
       typedef const event_type *pointer;
 
-      iterator() XMLXX_NOEXCEPT : p_(0), e_(eof) {}
+      iterator() XMLCC_NOEXCEPT : p_(0), e_(eof) {}
 
       iterator(parser *p, event_type e = eof)
           : p_(p), e_(e == eof ? p->next() : e)
       {
       }
 
-      bool operator==(iterator const &other) const XMLXX_NOEXCEPT
+      bool operator==(iterator const &other) const XMLCC_NOEXCEPT
       {
         return e_ == other.e_;
       }
 
-      bool operator!=(iterator const &other) const XMLXX_NOEXCEPT
+      bool operator!=(iterator const &other) const XMLCC_NOEXCEPT
       {
         return !(*this == other);
       }
 
-      reference operator*() const XMLXX_NOEXCEPT { return e_; }
+      reference operator*() const XMLCC_NOEXCEPT { return e_; }
 
       iterator &operator++()
       {

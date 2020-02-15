@@ -4,7 +4,7 @@
 namespace xmlcc {
   std::ostream &operator<<(std::ostream &os, const content &c)
   {
-#ifdef XMLXX_CXX11
+#ifdef XMLCC_CXX11
     switch (c) {
 #else
     switch (c.v_) {

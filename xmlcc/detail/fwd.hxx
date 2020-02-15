@@ -10,7 +10,7 @@ namespace xmlcc {
 
   class parsing;
 
-#ifndef XMLXX_CXX11
+#ifndef XMLCC_CXX11
   struct content;
 #endif
 } // namespace xmlcc

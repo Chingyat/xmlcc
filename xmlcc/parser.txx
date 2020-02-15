@@ -8,11 +8,11 @@ namespace xmlcc {
 
   template <typename T> T parser::attribute(const std::string &name) const
   {
-    XMLXX_CONSTEXPR const value_traits<T> traits;
+    XMLCC_CONSTEXPR const value_traits<T> traits;
     return traits.parse(attribute(name), *this);
   }
 
-#ifdef XMLXX_CXX11
+#ifdef XMLCC_CXX11
   template <typename T, typename U>
   T parser::attribute(const std::string &name, U &&default_value) const
   {
@@ -32,18 +32,18 @@ namespace xmlcc {
 
   template <typename T> T parser::element()
   {
-    XMLXX_CONSTEXPR const value_traits<T> traits;
+    XMLCC_CONSTEXPR const value_traits<T> traits;
     return traits.parse(element(), const_cast<parser const &>(*this));
   }
 
   template <typename T> T parser::element(const std::string &name)
   {
-    XMLXX_CONSTEXPR const value_traits<T> traits;
+    XMLCC_CONSTEXPR const value_traits<T> traits;
     return traits.parse(element(name), const_cast<parser const &>(*this));
   }
 
 #if 0
-#ifndef XMLXX_CXX11
+#ifndef XMLCC_CXX11
   template <typename T>
   T parser:: element(const std::string &name, const T &default_value) {
     const value_traits<T> traits;
