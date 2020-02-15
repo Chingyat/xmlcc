@@ -39,5 +39,5 @@ if !XMLCC_USE_EXTERNAL_GENX
   libxmlcc_la_SOURCES += detail/genx/genx.c detail/genx/charProps.c detail/genx/genx.h
 endif
 
-libxmlcc_la_LDFLAGS = -version-info 0:0:0
+libxmlcc_la_LDFLAGS = -no-undefined -version-info 0:0:0
 
